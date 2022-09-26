@@ -3,6 +3,7 @@ package product
 import (
 	"encoding/json"
 	entity "go-ddd/internal/entity/product"
+	internalhttp "go-ddd/internal/http"
 	"net/http"
 )
 
@@ -62,9 +63,7 @@ func (h *CreateProductHandler) ServeHTTP(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusCreated)
-	w.Write(body)
+	internalhttp.RespondJSON(w, http.StatusCreated, body)
 }
 
 func (h *CreateProductHandler) validateCreateProduct(payload CreateProductHandlerRequest) error {

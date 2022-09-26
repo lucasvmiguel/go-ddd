@@ -4,10 +4,8 @@ import (
 	"database/sql"
 	"encoding/json"
 	entity "go-ddd/internal/entity/product"
+	internalhttp "go-ddd/internal/http"
 	"net/http"
-	"strconv"
-
-	"github.com/go-chi/chi/v5"
 )
 
 type GetProductHandlerRequest struct {
@@ -33,7 +31,7 @@ func NewGetProductHandler(service ProductGetter) http.Handler {
 }
 
 func (h *GetProductHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	id, err := strconv.Atoi(chi.URLParam(r, "id"))
+	id, err := internalhttp.GetIntParam(r, "id")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
@@ -69,9 +67,7 @@ func (h *GetProductHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	w.Write(body)
+	internalhttp.RespondJSON(w, http.StatusOK, body)
 }
 
 func (h *GetProductHandler) validateGetProduct(payload GetProductHandlerRequest) error {
