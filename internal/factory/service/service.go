@@ -7,6 +7,7 @@ import (
 
 type Services struct {
 	CreateProductService productservice.ProductCreator
+	GetProductService    productservice.ProductGetter
 }
 
 type NewArgs struct {
@@ -15,8 +16,10 @@ type NewArgs struct {
 
 func New(args NewArgs) (*Services, error) {
 	createProductService := productservice.NewCreateProductService(args.ProductRepository)
+	getProductService := productservice.NewGetProductService(args.ProductRepository)
 
 	return &Services{
 		CreateProductService: createProductService,
+		GetProductService:    getProductService,
 	}, nil
 }

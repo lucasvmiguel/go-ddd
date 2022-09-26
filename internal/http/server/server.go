@@ -30,6 +30,10 @@ func (s *HTTPServer) Post(pattern string, handlerFn http.HandlerFunc) {
 	s.router.Post(pattern, handlerFn)
 }
 
+func (s *HTTPServer) Get(pattern string, handlerFn http.HandlerFunc) {
+	s.router.Get(pattern, handlerFn)
+}
+
 func (s *HTTPServer) Listen() {
 	http.ListenAndServe(s.port, s.router)
 }

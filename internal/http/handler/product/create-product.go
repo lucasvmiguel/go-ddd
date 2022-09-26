@@ -37,13 +37,13 @@ func (h *CreateProductHandler) ServeHTTP(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
-	err = h.validate(payload)
+	err = h.validateCreateProduct(payload)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
-	product, err := h.service.Create(entity.Product{
+	p, err := h.service.Create(entity.Product{
 		Title:       payload.Title,
 		Description: payload.Description,
 	})
@@ -53,9 +53,9 @@ func (h *CreateProductHandler) ServeHTTP(w http.ResponseWriter, r *http.Request)
 	}
 
 	body, err := json.Marshal(CreateProductHandlerResponse{
-		ID:          product.ID,
-		Title:       product.Title,
-		Description: product.Description,
+		ID:          p.ID,
+		Title:       p.Title,
+		Description: p.Description,
 	})
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -67,6 +67,6 @@ func (h *CreateProductHandler) ServeHTTP(w http.ResponseWriter, r *http.Request)
 	w.Write(body)
 }
 
-func (h *CreateProductHandler) validate(payload CreateProductHandlerRequest) error {
+func (h *CreateProductHandler) validateCreateProduct(payload CreateProductHandlerRequest) error {
 	return nil
 }

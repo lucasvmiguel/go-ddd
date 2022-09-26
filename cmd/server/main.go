@@ -51,6 +51,7 @@ func main() {
 
 	handlers, err := handlerfactory.New(handlerfactory.NewArgs{
 		CreateProductService: services.CreateProductService,
+		GetProductService:    services.GetProductService,
 	})
 	if err != nil {
 		log.Fatal(err)
@@ -60,5 +61,7 @@ func main() {
 	httpServer := httpserver.New(httpserver.NewArgs{Port: cfg.HTTPServerPort})
 
 	httpServer.Post("/products", handlers.CreateProductHandler.ServeHTTP)
+	httpServer.Get("/products/{id}", handlers.GetProductHandler.ServeHTTP)
+
 	httpServer.Listen()
 }

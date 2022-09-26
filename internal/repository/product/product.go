@@ -8,9 +8,9 @@ import (
 )
 
 const (
-	tableName      = "products"
-	insertQuery    = "INSERT INTO " + tableName + " (title, description) VALUES ($1, $2);"
-	selectOneQuery = "SELECT * FROM " + tableName + " WHERE id = $1;"
+	tableName    = "products"
+	insertQuery  = "INSERT INTO " + tableName + " (title, description) VALUES ($1, $2);"
+	getByIDQuery = "SELECT * FROM " + tableName + " WHERE id = $1;"
 )
 
 type Repository struct {
@@ -32,7 +32,16 @@ func (r *Repository) Create(product entity.Product) (*entity.Product, error) {
 		return nil, err
 	}
 
-	rows, err := r.db.Query(selectOneQuery, id)
+	p, err := r.GetByID(int(id))
+	if err != nil {
+		return nil, err
+	}
+
+	return p, nil
+}
+
+func (r *Repository) GetByID(id int) (*entity.Product, error) {
+	rows, err := r.db.Query(getByIDQuery, id)
 	if err != nil {
 		return nil, err
 	}
