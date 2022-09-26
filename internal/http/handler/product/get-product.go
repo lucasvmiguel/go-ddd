@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	entity "go-ddd/internal/entity/product"
-	internalhttp "go-ddd/internal/http"
+	internalhttp "go-ddd/pkg/http"
 	"net/http"
 )
 

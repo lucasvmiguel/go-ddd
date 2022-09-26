@@ -1,14 +1,14 @@
 package main
 
 import (
-	"go-ddd/internal/db"
 	handlerfactory "go-ddd/internal/factory/handler"
 	repositoryfactory "go-ddd/internal/factory/repository"
 	servicefactory "go-ddd/internal/factory/service"
+	"go-ddd/pkg/db"
 
 	"log"
 
-	httpserver "go-ddd/internal/http/server"
+	httpserver "go-ddd/pkg/http/server"
 )
 
 type config struct {

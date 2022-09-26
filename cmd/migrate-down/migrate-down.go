@@ -1,12 +1,7 @@
 package main
 
 import (
-	"database/sql"
-	"log"
-
-	"github.com/golang-migrate/migrate/v4"
-	"github.com/golang-migrate/migrate/v4/database/sqlite3"
-	"github.com/golang-migrate/migrate/v4/source/file"
+	"go-ddd/pkg/db"
 )
 
 type config struct {
@@ -22,29 +17,10 @@ func main() {
 		DBMigrationPath: "./db/migrations",
 	}
 
-	db, err := sql.Open(cfg.DBDriver, cfg.DBDataSource)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer db.Close()
-
-	instance, err := sqlite3.WithInstance(db, &sqlite3.Config{})
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	fSrc, err := (&file.File{}).Open(cfg.DBMigrationPath)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	m, err := migrate.NewWithInstance("file", fSrc, cfg.DBDriver, instance)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	// modify for Down
-	if err := m.Down(); err != nil {
-		log.Fatal(err)
-	}
+	db.Migrate(db.MigrateArgs{
+		DBDriver:        cfg.DBDriver,
+		DBDataSource:    cfg.DBDataSource,
+		DBMigrationPath: cfg.DBMigrationPath,
+		IsDown:          true,
+	})
 }
